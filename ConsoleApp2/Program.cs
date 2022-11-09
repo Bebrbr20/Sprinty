@@ -1,6 +1,8 @@
 ﻿// See https://aka.ms/new-console-template for more information
 //Console.WriteLine("Hello, World!");
 
+using System.Linq;
+
 string Menu()
 {
     Console.WriteLine("Vítej ve hře");
@@ -15,15 +17,27 @@ string Menu()
 
 string VerifyVolba(string x)
 {
-    if (x.ToLower()== "a")
+   
+    for (int i=1; i==1;)
     {
-        Start();
+     if (x.ToLower()== "a")
+        {
+            Start();
+            return "true";
+        }
+        if (x.ToLower() == "b")
+        {
+            Console.WriteLine("Konec");
+            return "true";
+        }
+        else
+        {
+            Console.WriteLine("Tato volba neexistuje!\nVybrete znovu->");
+            x = Console.ReadLine();
+        }
     }
-    if (x.ToLower() == "b")
-    {
-        Console.WriteLine("Konec");
-    }
-    return "true";
+
+    return "false";
 }
 
 void Start()
@@ -43,10 +57,23 @@ char[] CharToArray(string input)
 }
 
 
-bool CharInArray(char[] input)
-{
 
-    return true;
+bool CharInArray(char[] input, string xx)
+{
+    if (Array.IndexOf(input, xx) > -1)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    
+    
+}
+
+int ArrayLenght(char[] input)
+{
     
 }
 
