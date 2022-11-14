@@ -2,6 +2,13 @@
 //Console.WriteLine("Hello, World!");
 
 using System.Linq;
+using System;
+using System.IO;
+using System.Text.Json;
+using System.Threading.Tasks;
+
+
+
 
 string Menu()
 {
@@ -43,6 +50,33 @@ string VerifyVolba(string x)
 void Start()
 {
     Console.WriteLine("Vítej ve hře");
+    Easy();
+}
+
+void Easy()
+{
+    
+    string[] words = System.IO.File.ReadAllLines(@"../../../wordList.txt");
+    Random random = new Random();
+    int start = random.Next(0, words.Length);
+    string slovo = words[start];
+    char[] arr = CharToArray(slovo);
+    int lenght = ArrayLenght(arr);
+    string[] progress = new string[lenght];
+    
+    for (int i = 0; i < lenght; i++)
+    {
+        progress[i] = "_";
+    }
+
+   foreach (string s in progress) 
+    {
+        Console.Write(s + " "); 
+    }
+
+    Console.Write("\nPísmeno ->");
+    bool result = CharInArray(arr, Console.ReadLine());
+    Console.WriteLine(result);
 }
 
 char[] CharToArray(string input)
@@ -74,7 +108,7 @@ bool CharInArray(char[] input, string xx)
 
 int ArrayLenght(char[] input)
 {
-    
+    return input.Length;
 }
 
 char[] DoubleArray(char[] input)
@@ -83,5 +117,8 @@ char[] DoubleArray(char[] input)
 
     return doubleArr;
 }
+
+
+
 
 Menu();
