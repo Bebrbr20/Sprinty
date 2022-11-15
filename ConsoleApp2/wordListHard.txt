@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 ﻿oraclesqldeveloper
 dvouproudovémotory
 lopatkovýmotor
+=======
+﻿databáze
+cocomo
+řehák
+>>>>>>> fc24ae4 (zmeny doma)

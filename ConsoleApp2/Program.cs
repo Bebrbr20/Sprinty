@@ -1,18 +1,18 @@
 ﻿// See https://aka.ms/new-console-template for more information
 //Console.WriteLine("Hello, World!");
 
-using System.Linq;
-using System;
-using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.VisualBasic;
+
+
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 int pocetHer = 0;
 int zivoty = 1;
 string jmeno = "";
 
-        void Menu()
+
+
+    void Menu()
         {
             Console.WriteLine("Vítej ve hře");
             Console.WriteLine("Tady máš možnisti ty chcanko");
@@ -37,7 +37,7 @@ string jmeno = "";
                 if (x.ToLower() == "b")
                 {
                     Console.WriteLine("Konec");
-                    return "true";
+                    return "konec";
                 }
                 else
                 {
@@ -105,7 +105,9 @@ void Start()
         progress[i] = '_';
     }
 
-    bool status = true; ;
+    char[] userInput = new char[30];
+    int pokus = 0;
+    bool status = true;
     while (status == true && zivoty >= 1)
     {
         foreach (char s in progress)
@@ -114,13 +116,18 @@ void Start()
         }
 
         char input = VerifyInput();
-        if (CharInArray(arr, input) == true)
+        
+        if (CharInArray(arr, input) == true && CharInArray(userInput, input) == false)
         {
             for (int j = 0; j < arr.Length; j++)
                     {
                         if (input == arr[j])
                             progress[j] = input;
                     }
+        }
+        else if (CharInArray(userInput, input) == true)
+        {
+            Console.WriteLine("Tento znak jste již zadali!");
         }
         else
         {
@@ -135,6 +142,9 @@ void Start()
             pocetHer++;
             Console.WriteLine("\nVyhrál jsi!");
         }
+        userInput[pokus] = input;
+        pokus++;
+
         
     }
 }
@@ -204,7 +214,7 @@ void Start()
 
     char VerifyInput()
 {
-    Console.Write("\nPísmeno ->");
+    Console.Write("\n->");
     string input = "nnn";
 
     while (true)
@@ -222,11 +232,59 @@ void Start()
     }
     
 }
+bool akl = true;
+
+Menu();
+
+while (akl == true)
+{
+   
+    if (zivoty == 0)
+    {
+        bool score = false;
+        while (score == false)
+        {
+            Console.WriteLine("\nChcete zeznamenat vaše skóre?\nA) ano\nB) stiskem jakékoliv jiné klávesy hru ukončíte...\n\n");
+            char vlba = VerifyInput();
+            if (vlba == 'a' || vlba == 'A')
+            {
+                Console.Write("Zadejte vaše jméno\n->");
+                string player = Console.ReadLine();
 
 
-    Menu();
+            }
+            else
+            {
+                score = true; ;
+            }
+        }
+
+    }
     Console.WriteLine("\nChcete hru zopakovat?");
     Console.WriteLine("A) Ano");
     Console.WriteLine("B) Ne, ukončit hru\n\n->");
     string volba = Console.ReadLine();
-    VerifyVolba(volba);
+    string result = VerifyVolba(volba);
+    if (result == "konec")
+    {
+        akl = false;
+        bool score = false;
+        while (score == false)
+        {
+            Console.WriteLine("\nChcete zeznamenat vaše skóre?\nA) ano\nB) stiskem jakékoliv jiné klávesy hru ukončíte...\n\n");
+            char vlba = VerifyInput();
+            if (vlba == 'a' || vlba == 'A')
+            {
+                Console.Write("Zadejte vaše jméno\n->");
+                string player = Console.ReadLine();
+
+
+            }
+            else
+            {
+                score = true; ;
+            }
+        }
+    }
+
+}
