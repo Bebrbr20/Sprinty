@@ -3,6 +3,8 @@
 
 
 
+using System.Collections.Generic;
+using System.IO;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
@@ -10,14 +12,15 @@ int pocetHer = 0;
 int zivoty = 1;
 string jmeno = "";
 
+bool akl = true;
 
-
-    void Menu()
+void Menu()
         {
             Console.WriteLine("Vítej ve hře");
-            Console.WriteLine("Tady máš možnisti ty chcanko");
+            
             Console.WriteLine("A) Start");
-            Console.Write("B) Exit\n\n->");
+            Console.WriteLine("B) Leaderboard");
+            Console.Write("N) Ukončit hru\n\n->");
 
             string volba = Console.ReadLine();
 
@@ -26,17 +29,24 @@ string jmeno = "";
 
         string VerifyVolba(string x)
         {
+       
 
-            for (int i = 1; i == 1;)
+    for (int i = 1; i == 1;)
             {
                 if (x.ToLower() == "a")
                 {
                     Start();
                     return "true";
                 }
-                if (x.ToLower() == "b")
+                else if (x.ToLower() == "b")
                 {
-                    Console.WriteLine("Konec");
+                    DisplayLeaderboard();
+                    return "true";
+        }
+                else if (x.ToLower() == "n")
+                {
+
+                    akl = false;
                     return "konec";
                 }
                 else
@@ -51,7 +61,13 @@ string jmeno = "";
 
         char[] VerifyVolbaX(string x)
         {
-            char[] stringos;
+        if (zivoty == 0)
+        {
+
+            pocetHer = 0;
+        zivoty = 1;
+        }
+    char[] stringos;
             for (int i = 1; i == 1;)
             {
                 if (x.ToLower() == "e")
@@ -133,14 +149,28 @@ void Start()
         {
             zivoty--;
             Console.WriteLine("Tento znak se zde nenachází!");
-            Console.WriteLine("Máte " + zivoty + " životů !");
+            Console.WriteLine("Máte " + zivoty + " životů !\n");
         }
 
         if(Enumerable.SequenceEqual(arr, progress))
         {
             status = false;
             pocetHer++;
+            Console.Write("Slovo bylo ");
+            foreach (char s in progress)
+            {
+                Console.Write(s );
+            }
+
             Console.WriteLine("\nVyhrál jsi!");
+        }
+        if(zivoty == 0)
+        {
+            Console.Write("\nUmřel jsi!\n\nSlovo bylo ");
+            foreach (char s in arr)
+            {
+                Console.Write(s);
+            }
         }
         userInput[pokus] = input;
         pokus++;
@@ -151,7 +181,6 @@ void Start()
 
     char[] Easy()
     {
-
         string[] words = System.IO.File.ReadAllLines(@"../../../wordList.txt");
         Random random = new Random();
         int start = random.Next(0, words.Length);
@@ -159,7 +188,7 @@ void Start()
         char[] arr = CharToArray(slovo);
 
         return arr;
-    }
+}
 
     char[] Hard()
     {
@@ -232,63 +261,90 @@ void Start()
     }
     
 }
-bool writeToLeaderboard()
+bool writeToLeaderboard(string jmeno, int pocet)
 {
+    string newFileName = "../../../leaderboard.csv";
+
+    string clientDetails = jmeno + "," + pocet + Environment.NewLine;
+
+
+    if (!File.Exists(newFileName))
+    {
+        
+        File.WriteAllText(newFileName, clientDetails);
+        File.AppendAllText(newFileName, clientDetails);
+    }
+    else
+    {
+        File.AppendAllText(newFileName, clientDetails);
+    }
+
+    
     return true;
 }
-bool akl = true;
+
+void DisplayLeaderboard()
+{
+    string[] leaderbord = System.IO.File.ReadAllLines(@"../../../leaderboard.csv");
+    List<int> poradi = new List<int>();
+    foreach (string s in leaderbord)
+    {
+        char lastCharacter = s[s.Length - 1];
+        poradi.Add(lastCharacter);
+        
+    }
+    foreach (char item in poradi)
+    {
+        //Console.WriteLine(item);
+    }
+    foreach (string item in leaderbord)
+    {
+        Console.WriteLine(item);
+
+    }
+    Console.WriteLine("Stiskněte libovolnou klávesu pro ukončení\n\n->");
+    Console.ReadLine();
+    akl = false;
+    
+}
+
+
 
 Menu();
 
 while (akl == true)
 {
-   
-    if (zivoty == 0)
-    {
-        bool score = false;
-        while (score == false)
+
+
+    
+        Console.WriteLine("\nChcete hru zopakovat?");
+        Console.WriteLine("A) Ano");
+        Console.WriteLine("N) Ne, ukončit hru\n\n->");
+        string volba = Console.ReadLine();
+        string result = VerifyVolba(volba);
+        if (result == "konec")
         {
-            Console.WriteLine("\nChcete zeznamenat vaše skóre?\nA) ano\nB) stiskem jakéhokoliv jiného písmena hru ukončíte...\n\n");
-            char vlba = VerifyInput();
-            if (vlba == 'a' || vlba == 'A')
+            akl = false;
+            bool score = false;
+            while (score == false)
             {
-                Console.Write("Zadejte vaše jméno\n->");
-                string player = Console.ReadLine();
-
-
-            }
-            else
-            {
-                score = true; ;
+                Console.WriteLine("\nChcete zeznamenat vaše skóre? (" + pocetHer + ")\nA) ano\nB) stiskem jakéhokoliv jiného písmena klávesy hru ukončíte...\n\n");
+                char vlba = VerifyInput();
+                if (vlba == 'a' || vlba == 'A')
+                {
+                    Console.Write("Zadejte vaše jméno\n->");
+                    string player = Console.ReadLine();
+                writeToLeaderboard(player, pocetHer);
+                score = true;
+                    
+                }
+                else
+                {
+                    score = true;
+                }
             }
         }
-
-    }
-    Console.WriteLine("\nChcete hru zopakovat?");
-    Console.WriteLine("A) Ano");
-    Console.WriteLine("B) Ne, ukončit hru\n\n->");
-    string volba = Console.ReadLine();
-    string result = VerifyVolba(volba);
-    if (result == "konec")
-    {
-        akl = false;
-        bool score = false;
-        while (score == false)
-        {
-            Console.WriteLine("\nChcete zeznamenat vaše skóre?\nA) ano\nB) stiskem jakéhokoliv jiného písmena klávesy hru ukončíte...\n\n");
-            char vlba = VerifyInput();
-            if (vlba == 'a' || vlba == 'A')
-            {
-                Console.Write("Zadejte vaše jméno\n->");
-                string player = Console.ReadLine();
-
-
-            }
-            else
-            {
-                score = true; ;
-            }
-        }
-    }
-
+    
+    
+    
 }

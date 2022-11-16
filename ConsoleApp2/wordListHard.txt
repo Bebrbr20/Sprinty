@@ -1,5 +1,4 @@
-
-﻿oraclesqldeveloper
+oraclesqldeveloper
 dvouproudovémotory
 lopatkovýmotor
 

@@ -1,3 +1,4 @@
-﻿databáze
 cocomo
 řehák
+databáze
+oracle
