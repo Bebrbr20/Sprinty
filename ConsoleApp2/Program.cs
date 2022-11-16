@@ -232,6 +232,10 @@ void Start()
     }
     
 }
+bool writeToLeaderboard()
+{
+    return true;
+}
 bool akl = true;
 
 Menu();
@@ -244,7 +248,7 @@ while (akl == true)
         bool score = false;
         while (score == false)
         {
-            Console.WriteLine("\nChcete zeznamenat vaše skóre?\nA) ano\nB) stiskem jakékoliv jiné klávesy hru ukončíte...\n\n");
+            Console.WriteLine("\nChcete zeznamenat vaše skóre?\nA) ano\nB) stiskem jakéhokoliv jiného písmena hru ukončíte...\n\n");
             char vlba = VerifyInput();
             if (vlba == 'a' || vlba == 'A')
             {
@@ -271,7 +275,7 @@ while (akl == true)
         bool score = false;
         while (score == false)
         {
-            Console.WriteLine("\nChcete zeznamenat vaše skóre?\nA) ano\nB) stiskem jakékoliv jiné klávesy hru ukončíte...\n\n");
+            Console.WriteLine("\nChcete zeznamenat vaše skóre?\nA) ano\nB) stiskem jakéhokoliv jiného písmena klávesy hru ukončíte...\n\n");
             char vlba = VerifyInput();
             if (vlba == 'a' || vlba == 'A')
             {
